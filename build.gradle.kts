@@ -8,6 +8,7 @@ version = "1.0-SNAPSHOT"
 
 repositories {
     mavenCentral()
+    maven("https://jitpack.io")
 }
 
 dependencies {
@@ -18,6 +19,9 @@ dependencies {
     implementation("log4j:log4j:$log4jVersion")
 
     implementation("com.sparkjava:spark-core:2.9.3")
+
+    val sqliteDAOVersion = "1.1.0.0000"
+    implementation("com.github.kevinvandenbreemen:sqlite-dao:$sqliteDAOVersion")
 
 
 }
