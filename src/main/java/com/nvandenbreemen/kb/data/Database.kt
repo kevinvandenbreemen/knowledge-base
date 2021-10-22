@@ -27,10 +27,12 @@ object Database {
         //  Database setup here
         schema.addDatabaseChange(1, "CREATE TABLE page(id INTEGER PRIMARY KEY AUTOINCREMENT, title TEXT, content TEXT)")
 
-        val welcomeText = """
-            Welcome to the KnowledgeBase app, a simple app that allows you to manage a complex base of knowledge about a subject and index it according to your needs.
-        """.trimIndent()
-        schema.addDatabaseChange(2, "INSERT INTO page(title, content) VALUES ('Startup Page', '$welcomeText')")
+        if(!testMode) {
+            val welcomeText = """
+                Welcome to the KnowledgeBase app, a simple app that allows you to manage a complex base of knowledge about a subject and index it according to your needs.
+            """.trimIndent()
+            schema.addDatabaseChange(2, "INSERT INTO page(title, content) VALUES ('Startup Page', '$welcomeText')")
+        }
 
     }
 
