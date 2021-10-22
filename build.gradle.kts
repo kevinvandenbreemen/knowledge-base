@@ -20,9 +20,10 @@ dependencies {
 
     implementation("com.sparkjava:spark-core:2.9.3")
 
-    val sqliteDAOVersion = "1.1.0.0000"
+    val sqliteDAOVersion = "1.1.0.1000"
     implementation("com.github.kevinvandenbreemen:sqlite-dao:$sqliteDAOVersion")
 
+    testImplementation("org.amshove.kluent:kluent:1.68")
 
 }
 
