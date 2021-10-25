@@ -30,6 +30,28 @@ dependencies {
 
 }
 
+val fatJar = task("FatJar", type = Jar::class) {
+
+    val jarName = "knowledgeBase.jar"
+
+    archiveName = jarName
+    duplicatesStrategy = DuplicatesStrategy.INCLUDE
+    manifest {
+        attributes["Main-Class"] = "com.nvandenbreemen.kb.server.MainServer"
+
+    }
+    from(configurations.runtimeClasspath.get().map {
+        if(it.isDirectory) it else zipTree(it)
+    })
+    with(tasks.jar.get() as CopySpec)
+
+    copy {
+        from("build/libs/$jarName")
+        into("./")
+    }
+    println("Built and copied $jarName")
+}
+
 tasks.getByName<Test>("test") {
     useJUnitPlatform()
 }
