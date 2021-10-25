@@ -2,6 +2,7 @@ package com.nvandenbreemen.kb.interactor
 
 import com.nvandenbreemen.kb.data.Page
 import com.nvandenbreemen.kb.repository.PageRepository
+import com.nvandenbreemen.kb.view.PageSearchView
 import com.nvandenbreemen.kb.view.PageView
 
 class PageInteractor(private val pageRepository: PageRepository) {
@@ -23,6 +24,16 @@ class PageInteractor(private val pageRepository: PageRepository) {
             val tags = pageRepository.getTags(id).joinToString(separator = ", ")
             pageView.edit(this, tags)
         }
+    }
+
+    fun searchPages(searchTerm: String, searchView: PageSearchView) {
+        pageRepository.findPages(searchTerm).also { searchView.displayResults(it) }
+    }
+
+    fun createPage(title: String, content: String, view: PageView) {
+        pageRepository.storePage(Page.newPage(title, content))
+        val id = pageRepository.getLatestPageId()
+        view.display(pageRepository.lookup(id))
     }
 
 }

@@ -15,6 +15,17 @@ object ContentRenderer {
 
     private const val CONTROL_SECTION = "_control"
 
+    private fun controlBar(page: Page?) : String {
+        return """
+<div class="$CONTROL_SECTION">
+${page?.let { "<a href=\"/edit/page/${page.id}\" accesskey=\"e\">EDIT</a>" } ?: "" }
+<a href="/search/page" accesskey="f">Find Pages</a>
+<a href="/create/page" accesskey="n">CREATE PAGE</a>
+</div>
+        """.trimIndent()
+
+    }
+
     fun render(page: Page): String {
 
         val markdownRenderBuilder = Parser.builder().build()
@@ -23,7 +34,7 @@ object ContentRenderer {
         val rendered = renderer.render(document);
 
         return """
-            <div class="$CONTROL_SECTION"><a href="/edit/page/${page.id}" accesskey="e">EDIT</a></div>
+            ${controlBar(page)}
             <h1>${page.title}</h1>
             <p>$rendered</p>
             <div class="$CONTROL_SECTION"><a href="/edit/page/${page.id}" accesskey="e">EDIT</a></div>
@@ -32,6 +43,7 @@ object ContentRenderer {
 
     fun edit(page: Page, tags: String): String {
         return """
+${controlBar(null)}
 <form action="/page/${page.id}" method="post">
 <input type="hidden" name="_method" value="put" />
 <h2>Title</h2>
@@ -45,6 +57,43 @@ ${page.content}
 <br/>
 <div class="$CONTROL_SECTION"><input type="submit" value="Submit" /></div>
 </form>
+        """.trimIndent()
+    }
+
+    fun createPage(): String {
+        return """
+${controlBar(null)}
+<form action="/create/page" method="post">
+<h2>Title</h2>
+<input name="title" />
+<hr/>
+<textarea name="body" rows="10" cols="80" >
+
+</textarea>
+<br/>
+<div class="$CONTROL_SECTION"><input type="submit" value="Submit" /></div>
+</form>
+        """.trimIndent()
+    }
+
+    fun searchScreen(): String {
+        return """
+${controlBar(null)}
+<form action="/search/page/like" method="get">
+Query:  <input name="query" />
+<div class="$CONTROL_SECTION"><input type="submit" value="Submit" /></div>
+</form>
+        """.trimIndent()
+    }
+
+    fun searchResults(pages: List<Page>): String {
+        return """
+${controlBar(null)}
+<ul>
+    ${pages.map { """
+        <li /><a href="/page/${it.id}">${it.title}</a>
+        """ }}
+</ul>
         """.trimIndent()
     }
 

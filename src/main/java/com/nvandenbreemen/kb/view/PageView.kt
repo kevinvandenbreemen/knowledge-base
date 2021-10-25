@@ -11,4 +11,6 @@ interface PageView {
 
     fun edit(page: Page, tags: String)
 
+    fun showError(error: String)
+
 }

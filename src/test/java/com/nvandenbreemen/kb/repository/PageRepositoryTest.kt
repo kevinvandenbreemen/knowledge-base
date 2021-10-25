@@ -2,10 +2,7 @@ package com.nvandenbreemen.kb.repository
 
 import com.nvandenbreemen.kb.data.Database
 import com.nvandenbreemen.kb.data.Page
-import org.amshove.kluent.shouldBeEmpty
-import org.amshove.kluent.shouldBeEqualTo
-import org.amshove.kluent.shouldHaveSize
-import org.amshove.kluent.shouldNotBeEmpty
+import org.amshove.kluent.*
 import org.junit.jupiter.api.AfterEach
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
@@ -40,6 +37,18 @@ internal class PageRepositoryTest {
         pages[0].content shouldBeEqualTo "This is a test page"
 
     }
+
+    @Test
+    fun `should throw error at missing fields in new page`() {
+        val newPage = Page.newPage("", "")
+        try {
+            repository.storePage(newPage)
+            fail("Error should have been thrown")
+        } catch (exception: Exception) {
+            exception.printStackTrace()
+        }
+    }
+
     @Test
     fun `should query page by similarity`() {
         val newPage = Page.newPage("Test Page", "This is a test page")

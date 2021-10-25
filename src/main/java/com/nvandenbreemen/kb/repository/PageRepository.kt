@@ -6,7 +6,14 @@ import com.vandenbreemen.kevincommon.db.SQLiteDAO
 class PageRepository(private val dao: SQLiteDAO) {
 
     fun storePage(page: Page) {
+        if(page.title.isBlank() || page.content.isBlank()) {
+            throw Exception("Please specify title and content for new page")
+        }
         dao.insert("INSERT INTO page(title, content) VALUES(?, ?)", arrayOf(page.title, page.content))
+    }
+
+    fun getLatestPageId(): Int {
+        return dao.query("SELECT max(id) as id FROM page", arrayOf())[0]["id"] as Int
     }
 
     /**

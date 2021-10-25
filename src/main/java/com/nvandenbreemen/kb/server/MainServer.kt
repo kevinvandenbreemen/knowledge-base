@@ -7,6 +7,7 @@ import com.nvandenbreemen.kb.interactor.PageInteractor
 import com.nvandenbreemen.kb.repository.PageRepository
 import com.nvandenbreemen.kb.server.MainServer
 import com.nvandenbreemen.kb.view.ContentRenderer
+import com.nvandenbreemen.kb.view.PageSearchView
 import com.nvandenbreemen.kb.view.PageView
 import org.apache.log4j.Logger
 import spark.Request
@@ -68,6 +69,32 @@ class MainServer {
             response.body()
         }
 
+        Spark.get("search/page") { request, response ->
+            return@get ContentRenderer.searchScreen()
+        }
+
+        Spark.get("/search/page/like") { request, respons ->
+            request.queryMap().get("query")?.let { query ->
+                pageInteractor.searchPages(query.value(), getSearchView(respons))
+            }
+            respons.body()
+        }
+
+        Spark.get("/create/page") {request, response ->
+            return@get ContentRenderer.createPage()
+        }
+
+        Spark.post("/create/page") { request, response ->
+            request.queryMap().get("title")?.let { title ->
+                request.queryMap().get("body")?.let { body ->
+                    val title = (title.value())
+                    val body = (body.value())
+                    pageInteractor.createPage(title, body, getPageView(response))
+                }
+            }
+            response.body()
+        }
+
         logger.info("Main Server Up and Running on port $PORT")
     }
 
@@ -95,6 +122,13 @@ class MainServer {
         override fun edit(page: Page, tags: String) {
             response.body(ContentRenderer.edit(page, tags))
         }
+    }
+
+    private fun getSearchView(response: Response) = object: PageSearchView {
+        override fun displayResults(pages: List<Page>) {
+            response.body(ContentRenderer.searchResults(pages))
+        }
+
     }
 
 
