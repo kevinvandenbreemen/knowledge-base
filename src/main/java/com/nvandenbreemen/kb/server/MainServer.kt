@@ -122,6 +122,10 @@ class MainServer {
         override fun edit(page: Page, tags: String) {
             response.body(ContentRenderer.edit(page, tags))
         }
+
+        override fun showError(error: String) {
+            response.body(ContentRenderer.displayError(error))
+        }
     }
 
     private fun getSearchView(response: Response) = object: PageSearchView {

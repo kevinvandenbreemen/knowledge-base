@@ -97,4 +97,8 @@ ${controlBar(null)}
         """.trimIndent()
     }
 
+    fun displayError(error: String): String {
+        return error
+    }
+
 }

@@ -31,7 +31,12 @@ class PageInteractor(private val pageRepository: PageRepository) {
     }
 
     fun createPage(title: String, content: String, view: PageView) {
-        pageRepository.storePage(Page.newPage(title, content))
+        try {
+            pageRepository.storePage(Page.newPage(title, content))
+        } catch (ex: Exception) {
+            view.showError(ex.localizedMessage)
+            return
+        }
         val id = pageRepository.getLatestPageId()
         view.display(pageRepository.lookup(id))
     }
