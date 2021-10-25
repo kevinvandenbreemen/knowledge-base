@@ -25,6 +25,9 @@ dependencies {
 
     testImplementation("org.amshove.kluent:kluent:1.68")
 
+    val markdownLibVersion = "0.18.0"
+    implementation("org.commonmark:commonmark:$markdownLibVersion")
+
 }
 
 tasks.getByName<Test>("test") {
