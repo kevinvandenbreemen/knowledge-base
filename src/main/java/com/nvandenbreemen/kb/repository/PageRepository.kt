@@ -26,6 +26,9 @@ class PageRepository(private val dao: SQLiteDAO) {
     }
 
     fun update(id: Int, updatedCopy: Page) {
+        if(updatedCopy.title.isBlank() || updatedCopy.content.isBlank()) {
+            throw Exception("Please specify title and content for page")
+        }
         dao.update("UPDATE page SET title=?, content=? WHERE id=?", arrayOf(updatedCopy.title, updatedCopy.content, id))
     }
 

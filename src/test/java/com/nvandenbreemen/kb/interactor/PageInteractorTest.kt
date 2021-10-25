@@ -150,4 +150,31 @@ internal class PageInteractorTest {
 
     }
 
+    @Test
+    fun `should raise an error if user submits missing info for existing page`() {
+        var displayedPage: Page? = null
+        var displayedError: String? = null
+        val view = object: PageView {
+            override fun display(page: Page) {
+                displayedPage = page
+            }
+
+            override fun edit(page: Page, tags: String) {
+
+            }
+
+            override fun showError(error: String) {
+                displayedError = error
+            }
+
+        }
+
+        repository.storePage(Page.newPage("Test Page", "Test page 1"))
+        interactor.updatePage(1, "", "Test Page 1", "Larry, Curly     Moe", view)
+
+        displayedPage.shouldBeNull()
+        displayedError.shouldNotBeNull()
+
+    }
+
 }
