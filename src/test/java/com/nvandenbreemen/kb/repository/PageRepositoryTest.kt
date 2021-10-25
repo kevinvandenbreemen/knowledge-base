@@ -117,4 +117,38 @@ internal class PageRepositoryTest {
         page.id shouldBeEqualTo 1
     }
 
+    @Test
+    fun `should provide for specifying tags for a page`() {
+        repository.storePage(Page.newPage("Test Page", "Test page 1"))
+        repository.storePage(Page.newPage("Other Page", "OTP"))
+
+        repository.tags(1, listOf("test", "tag", "smurf"))
+        val pages = repository.findByTag("smurf")
+        pages.shouldNotBeEmpty()
+        pages.size shouldBeEqualTo 1
+    }
+
+    @Test
+    fun `should provide for updating tags for a page`() {
+        repository.storePage(Page.newPage("Test Page", "Test page 1"))
+        repository.storePage(Page.newPage("Other Page", "OTP"))
+
+        repository.tags(1, listOf("test", "tag", "smurf"))
+        repository.tags(1, listOf("test", "tag", "smurf", "kitten"))
+        val pages = repository.findByTag("smurf")
+        pages.shouldNotBeEmpty()
+        pages.size shouldBeEqualTo 1
+    }
+
+    @Test
+    fun `should get tags for a page`() {
+        repository.storePage(Page.newPage("Test Page", "Test page 1"))
+        repository.storePage(Page.newPage("Other Page", "OTP"))
+
+        repository.tags(1, listOf("test", "tag", "smurf"))
+        val tags = repository.getTags(1)
+        tags.shouldNotBeEmpty()
+        tags shouldBeEqualTo listOf("test", "tag", "smurf")
+    }
+
 }

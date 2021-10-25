@@ -30,14 +30,16 @@ object ContentRenderer {
         """.trimIndent()
     }
 
-    fun edit(page: Page): String {
+    fun edit(page: Page, tags: String): String {
         return """
 <form action="/page/${page.id}" method="post">
 <input type="hidden" name="_method" value="put" />
 <h2>Title</h2>
 <input name="title" value="${page.title}" />
-<br/>
-<textarea name="body" rows="10" cols="20" >
+<h3>Tags</h3>
+<input name="tags" value="$tags" />
+<hr/>
+<textarea name="body" rows="10" cols="80" >
 ${page.content}
 </textarea>
 <br/>

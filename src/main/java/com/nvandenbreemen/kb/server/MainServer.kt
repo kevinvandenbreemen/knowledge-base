@@ -74,10 +74,11 @@ class MainServer {
     private fun handlePageContentPUT(request: Request, response: Response): String {
         request.queryMap().get("title")?.let { title ->
             request.queryMap().get("body")?.let { body ->
+                val tags = request.queryMap().get("tags")?.value() ?: ""
                 val title = (title.value())
                 val body = (body.value())
                 request.params()[":id"]?.toInt()?.let { pageID ->
-                    pageInteractor.updatePage(pageID, title, body, getPageView(response))
+                    pageInteractor.updatePage(pageID, title, body, tags, getPageView(response))
 
                     return response.body()
                 }
@@ -91,8 +92,8 @@ class MainServer {
             response.body(ContentRenderer.render(page))
         }
 
-        override fun edit(page: Page) {
-            response.body(ContentRenderer.edit(page))
+        override fun edit(page: Page, tags: String) {
+            response.body(ContentRenderer.edit(page, tags))
         }
     }
 

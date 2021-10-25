@@ -9,6 +9,6 @@ interface PageView {
 
     fun display(page: Page)
 
-    fun edit(page: Page)
+    fun edit(page: Page, tags: String)
 
 }

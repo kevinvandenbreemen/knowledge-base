@@ -28,4 +28,42 @@ class PageRepository(private val dao: SQLiteDAO) {
         }[0]
     }
 
+    fun tags(pageId: Int, tags: List<String>) {
+
+        dao.delete("DELETE FROM page_tag WHERE pageId=?", arrayOf(pageId))
+
+        val strBuold = StringBuilder("INSERT INTO page_tag(pageId, tag) VALUES ")
+        val values = mutableListOf<Any>()
+        tags.iterator().run {
+            do {
+                strBuold.append("(?, ?)")
+                values.apply {
+                    add(pageId)
+                    add(next())
+                }
+
+                if(hasNext()) {
+                    strBuold.append(", ")
+                }
+
+            } while (hasNext())
+        }
+
+        dao.insert(strBuold.toString(), values.toTypedArray())
+
+    }
+
+    fun findByTag(tag: String): List<Page> {
+        val pageIds = dao.query("SELECT pageId FROM page_tag WHERE tag=?", arrayOf(tag))
+        return pageIds.map {
+            lookup(it["pageId"] as Int)
+        }
+    }
+
+    fun getTags(pageId: Int): List<String> {
+        return dao.query("SELECT tag FROM page_tag WHERE pageId=?", arrayOf(pageId)).map {
+            it["tag"] as String
+        }
+    }
+
 }

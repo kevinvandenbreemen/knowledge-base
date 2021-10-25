@@ -34,6 +34,8 @@ object Database {
             schema.addDatabaseChange(2, "INSERT INTO page(title, content) VALUES ('Startup Page', '$welcomeText')")
         }
 
+        schema.addDatabaseChange(3, "CREATE TABLE page_tag (pageId INTEGER, tag TEXT, FOREIGN KEY(pageId) REFERENCES page(id))")
+
     }
 
     fun enterTestMode() {
