@@ -92,7 +92,7 @@ ${controlBar(null)}
 <ul>
     ${pages.map { """
         <li /><a href="/page/${it.id}">${it.title}</a>
-        """ }}
+        """ }.joinToString(separator = "<br/>")}
 </ul>
         """.trimIndent()
     }
