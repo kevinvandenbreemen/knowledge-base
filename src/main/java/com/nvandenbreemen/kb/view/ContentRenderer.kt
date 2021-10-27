@@ -43,11 +43,18 @@ ${page?.let { "<a href=\"/edit/page/${page.id}\" accesskey=\"e\">EDIT</a>" } ?: 
 
     fun edit(page: Page, tags: String): String {
         return """
+<html>
+<body onload='focus()'>
+<script>
+function focus() {
+    document.getElementById("title").focus();
+}
+</script>
 ${controlBar(null)}
 <form action="/page/${page.id}" method="post">
 <input type="hidden" name="_method" value="put" />
 <h2>Title</h2>
-<input name="title" value="${page.title}" />
+<input type="text" name="title" id="title" value="${page.title}" />
 <h3>Tags</h3>
 <input name="tags" value="$tags" />
 <hr/>
@@ -55,17 +62,26 @@ ${controlBar(null)}
 ${page.content}
 </textarea>
 <br/>
-<div class="$CONTROL_SECTION"><input type="submit" value="Submit" /></div>
+<div class="$CONTROL_SECTION"><input type="submit" value="Submit" accesskey="s" /></div>
 </form>
+</body>
+</html>
         """.trimIndent()
     }
 
     fun createPage(): String {
         return """
+<html>
+<body onload='focus()'>
+<script>
+function focus() {
+    document.getElementById("title").focus();
+}
+</script>
 ${controlBar(null)}
 <form action="/create/page" method="post">
 <h2>Title</h2>
-<input name="title" />
+<input name="title" id="title" />
 <hr/>
 <textarea name="body" rows="10" cols="80" >
 
@@ -73,14 +89,22 @@ ${controlBar(null)}
 <br/>
 <div class="$CONTROL_SECTION"><input type="submit" value="Submit" /></div>
 </form>
+</body>
+</html>
         """.trimIndent()
     }
 
     fun searchScreen(): String {
         return """
 ${controlBar(null)}
+<body onload='focus()'>
+<script>
+function focus() {
+    document.getElementById("query").focus();
+}
+</script>
 <form action="/search/page/like" method="get">
-Query:  <input name="query" />
+Query:  <input name="query" id="query"/>
 <div class="$CONTROL_SECTION"><input type="submit" value="Submit" /></div>
 </form>
         """.trimIndent()
