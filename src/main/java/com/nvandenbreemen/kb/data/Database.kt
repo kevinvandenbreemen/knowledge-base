@@ -36,6 +36,12 @@ object Database {
 
         schema.addDatabaseChange(3, "CREATE TABLE page_tag (pageId INTEGER, tag TEXT, FOREIGN KEY(pageId) REFERENCES page(id))")
 
+        schema.addDatabaseChange(4,
+            "create table temp_tag(pageId INTEGER, tag TEXT, CONSTRAINT fk_pagetag FOREIGN KEY(pageId) REFERENCES page(id) ON DELETE CASCADE); " +
+                "insert into temp_tag(pageId, tag) SELECT pageId, tag FROM page_tag; " +
+                "DROP TABLE page_tag; " +
+                "ALTER TABLE temp_tag RENAME TO page_tag")
+
     }
 
     fun enterTestMode() {

@@ -76,4 +76,8 @@ class PageRepository(private val dao: SQLiteDAO) {
         }
     }
 
+    fun delete(pageId: Int) {
+        dao.delete("DELETE FROM page WHERE id=?", arrayOf(pageId))
+    }
+
 }

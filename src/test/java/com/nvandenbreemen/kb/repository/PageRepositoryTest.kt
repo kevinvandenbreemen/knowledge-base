@@ -160,4 +160,15 @@ internal class PageRepositoryTest {
         tags shouldBeEqualTo listOf("test", "tag", "smurf")
     }
 
+    @Test
+    fun `should delete tags when deleting a page`() {
+        repository.storePage(Page.newPage("Test Page", "Test page 1"))
+        repository.tags(1, listOf("test", "tag", "smurf"))
+
+        repository.delete(1)
+        val tags = repository.getTags(1)
+
+        tags.shouldBeEmpty()
+    }
+
 }
